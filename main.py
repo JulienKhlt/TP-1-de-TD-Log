@@ -1,12 +1,8 @@
 from Domino import Domino
 
 if __name__ == '__main__':
-    A = Domino(6, 5)
-    B = Domino(4, 3)
-    C = Domino(2, 1)
-    D = Domino(0, 0)
+    testDomino = Domino(0, 0)
+    testSize = 4
 
-    dominos = [A, B, C, D]
-
-    for domino in dominos:
-        domino.affichage()
+    testDomino.size = 5
+    print(testDomino.generate_display_string(2))
