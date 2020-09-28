@@ -33,8 +33,8 @@ class Domino :
                     print(" ", end="")
             print("|", end="")
             for j in range(5):
-                if (i+1, j+1) in L2:
-                    print(L2[(i+1, j+1)], end="")
+                if (i+1, j+1) in Right_domino:
+                    print(Right_domino[(i+1, j+1)], end="")
                 else:
                     print(" ", end="")
             print("|")
