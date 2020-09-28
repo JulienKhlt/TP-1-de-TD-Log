@@ -1,34 +1,34 @@
 class Domino :
-    def __init__(self, n, m):
-        self.n = n
-        self.m = m
+    def __init__(self, l_value, r_value):
+        self.l_value = l_value
+        self.r_value = r_value
 
-    # TODO : remplacer par des dictionnaires
-    def domino(self, a):
-        if ( a==0 ):
+    def domino(self, value):
+        if (value == 0):
             return {}
-        elif (a == 1):
+        elif (value == 1):
             return {(2, 3): "*"}
-        elif (a == 2):
+        elif (value == 2):
             return {(1, 1 ): "*", (3, 5): "*"}
-        elif (a == 3):
+        elif (value == 3):
             return {(1, 1): "*", (2, 3) : "*", (3, 5): "*"}
-        elif (a == 4):
+        elif (value == 4):
             return {(1, 1): "*", (1, 5): "*", (3, 1): "*", (3, 5): "*"}
-        elif (a == 5):
+        elif (value == 5):
             return {(1, 1): "*", (1, 5): "*", (2, 3): "*", (3, 1): "*", (3, 5): "*"}
-        elif (a == 6):
+        elif (value == 6):
             return {(1, 1): "*", (1, 3): "*", (1, 5): "*", (3, 1): "*", (3, 3): "*", (3, 5): "*"}
 
+    # TODO : remplacer par fonction __str__
     def affichage(self):
-        L1 = self.domino(self.n)
-        L2 = self.domino(self.m)
+        Left_domino = self.domino(self.l_value)
+        Right_domino = self.domino(self.r_value)
         print("+-----|-----+")
         for i in range(3):
             print("|", end="")
             for j in range(5):
-                if (i+1,j+1) in L1:
-                    print(L1[(i+1, j+1)], end="")
+                if (i+1,j+1) in Left_domino:
+                    print(Left_domino[(i+1, j+1)], end="")
                 else:
                     print(" ", end="")
             print("|", end="")
