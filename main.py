@@ -1,12 +1,18 @@
 from Domino import Domino
+from random import randint
+from Game import Game
 
 if __name__ == '__main__':
-    A = Domino(6, 5)
-    B = Domino(4, 3)
-    C = Domino(2, 1)
-    D = Domino(0, 0)
+    game = Game(28)
 
-    dominos = [A, B, C, D]
+    while not game.victory:
 
-    for domino in dominos:
-        domino.affichage()
+        game.affichage()
+
+        game.round()
+
+        if game.islost():
+            print("Vous avez perdu... Dommage !")
+            exit(1)
+
+    print("Vous avez gagné ! Bravo !")
