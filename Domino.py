@@ -1,3 +1,5 @@
+import copy
+
 from MutableString import MutableString
 
 
@@ -6,12 +8,6 @@ class Domino:
         Dominos size must uneven be and squared."""
     DEFAULT_SIZE = 3
     DISPLAY_SYMBOL = '*'
-    # Store the blank pattern for a given size of Domino
-    DISPLAY_LIST = {}
-    # Store the pattern for a given size and value
-    DISPLAY_PATTERN = {}
-    DISPLAY_CANVAS_LIST = {}
-    DISPLAY_STRING = {}
 
     def generate_pattern(self, value, size):
         """
@@ -25,8 +21,8 @@ class Domino:
         if size <= 1 or value <= 0:
             return []
 
-        if size in Domino.DISPLAY_PATTERN.keys() and value in Domino.DISPLAY_PATTERN[size]:
-            return Domino.DISPLAY_PATTERN[size][value]
+        # if size in Domino.DISPLAY_PATTERN.keys() and value in Domino.DISPLAY_PATTERN[size]:
+        #     return copy.copy(Domino.DISPLAY_PATTERN[size][value])
 
         if value % 2 == 1:
             return [(0, 0)] + self.generate_pattern(value - 1, size)
@@ -40,9 +36,9 @@ class Domino:
         # We generate the interior of the pattern recursively
         full_pattern = pattern + self.generate_pattern(value - 8, size - 2)
 
-        if size not in Domino.DISPLAY_PATTERN.keys():
-            Domino.DISPLAY_PATTERN[size] = {}
-        Domino.DISPLAY_PATTERN[size][value] = full_pattern
+        # if size not in Domino.DISPLAY_PATTERN.keys():
+        #     Domino.DISPLAY_PATTERN[size] = {}
+        # Domino.DISPLAY_PATTERN[size][value] = copy.copy(full_pattern)
 
         return full_pattern
 
@@ -82,8 +78,8 @@ class Domino:
         Returns a MutableString
         """
 
-        if self._size in Domino.DISPLAY_CANVAS_LIST.keys():
-            return Domino.DISPLAY_CANVAS_LIST[self._size]
+        # if self._size in Domino.DISPLAY_CANVAS_LIST.keys():
+        #     return copy.copy(Domino.DISPLAY_CANVAS_LIST[self._size])
 
         canvas = MutableString()
         for i in [0, self._size + 1]:
@@ -100,7 +96,7 @@ class Domino:
             for i in range(1, self._size + 1):
                 canvas[i, j] = '|'
 
-        Domino.DISPLAY_CANVAS_LIST[self._size] = canvas
+        # Domino.DISPLAY_CANVAS_LIST[self._size] = copy.copy(canvas)
         return canvas
 
     def __init__(self, l_value, r_value, size=DEFAULT_SIZE):
