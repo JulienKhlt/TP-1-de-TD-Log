@@ -3,7 +3,7 @@ from MutableString import MutableString
 
 class Domino:
     """Insert Docstring
-        Dominos must be uneven and squared."""
+        Dominos size must uneven be and squared."""
     DEFAULT_SIZE = 3
     DISPLAY_SYMBOL = '*'
     # Store the blank pattern for a given size of Domino
@@ -33,9 +33,13 @@ class Domino:
 
         pattern = []
 
+        # We build a pattern for 3x3 domino
         pattern_normalized = self.generate_normalized_pattern(value)
+        # We expand it for the correct size
         pattern += self.expand_pattern(pattern_normalized, size)
+        # We generate the interior of the pattern recursively
         full_pattern = pattern + self.generate_pattern(value - 8, size - 2)
+
         if size not in Domino.DISPLAY_PATTERN.keys():
             Domino.DISPLAY_PATTERN[size] = {}
         Domino.DISPLAY_PATTERN[size][value] = full_pattern
