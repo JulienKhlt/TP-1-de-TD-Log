@@ -46,6 +46,14 @@ class MutableString:
             else:
                 self._string_list[key] = list(value)
 
+    def __len__(self):
+        return len(self._string_list)
+
+    def insert(self, i, j, mutable_string):
+        for k in range(len(mutable_string)):
+            for l in range(len(mutable_string[k])):
+                self[i + k, j + l] = mutable_string[k, l]
+
     def generate_string(self):
         """Generate the string representation of the object, doesn't return anything."""
         if not self._has_changed:
