@@ -1,7 +1,8 @@
-from Domino import Domino
+from Game import Game
 
 if __name__ == '__main__':
-    testDomino = Domino(19, 7, 7)
-    testDomino2 = Domino(0, 0, 7)
+    # Creation of the game
+    game = Game()
 
-    print(testDomino2)
+    # Execution of the game
+    game.play_game()
