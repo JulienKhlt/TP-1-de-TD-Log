@@ -44,7 +44,7 @@ class Game:
         """Printing the dominoes in the hand"""
 
         for domino in self.hand:
-            domino.affichage()
+            print(domino)
 
     def round(self):
         """This is a function that handles a turn in the solitaire's game"""
@@ -56,7 +56,7 @@ class Game:
         # Then we check if the sum of dominoes selected is indeed the number_point (12 normally)
         sum = 0
         for i in range(len(num_domino)):
-            sum += self.hand[int(num_domino[i]) - 1].l_value + self.hand[int(num_domino[i]) - 1].r_value
+            sum += self.hand[int(num_domino[i]) - 1]._lvalue + self.hand[int(num_domino[i]) - 1]._rvalue
 
         if sum == self.number_point:
             for i in range(len(num_domino)):
@@ -74,7 +74,7 @@ class Game:
 
     def islost(self):
         """Check if the game is lost"""
-        values = [self.hand[i].l_value + self.hand[i].r_value for i in range(len(self.hand))]
+        values = [self.hand[i]._lvalue + self.hand[i]._rvalue for i in range(len(self.hand))]
         return not sum_in_list(values, 7, self.number_point)
 
     def play_game(self):
@@ -106,7 +106,7 @@ def sum_in_list(list, n, sum):
 
     # Recursion : if the last item is bigger than the sum.
     if (list[n - 1] > sum):
-        return sum_in_list(list, n - 1, sum);
+        return sum_in_list(list, n - 1, sum)
 
     # Then there are two possibilities whether
     # we use the last number in the list or not
