@@ -1,3 +1,5 @@
+# TP of Julien Khlaut and Pierre Glandon
+
 from Domino import Domino
 from random import randint
 

@@ -1,3 +1,5 @@
+# TP of Julien Khlaut and Pierre Glandon
+
 import copy
 
 from MutableString import MutableString
@@ -51,7 +53,7 @@ class Domino:
 
         for (i, j) in pattern:
             list_position_i, list_position_j = self.transform_pattern_coord_to_list_coord(i, j)
-            display_list[list_position_i, list_position_j] = Domino.DISPLAY_SYMBOL
+            display_list[list_position_i, 2*list_position_j] = Domino.DISPLAY_SYMBOL
 
         return display_list
 
@@ -68,7 +70,7 @@ class Domino:
         canvas = self.generate_canvas()
 
         canvas.insert(1, 1, display_lvalue)
-        canvas.insert(1, self._size + 2, display_rvalue)
+        canvas.insert(1, 2*self._size + 1, display_rvalue)
 
         return str(canvas)
 
@@ -85,14 +87,14 @@ class Domino:
         for i in [0, self._size + 1]:
             # We generate top/bottom border
             canvas[i, 0] = '+'
-            for j in range(1, self._size + 1):
+            for j in range(1, 2*self._size):
                 canvas[i, j] = '-'
-            canvas[i, self._size + 1] = '|'
-            for j in range(self._size + 2, 2 * self._size + 3):
+            canvas[i, 2*self._size] = '|'
+            for j in range(2*self._size + 1, 4 * self._size + 1):
                 canvas[i, j] = '-'
             canvas[i, -1] = '+'
 
-        for j in [0, self._size + 1, 2 * self._size + 2]:
+        for j in [0, 2*self._size, 4 * self._size]:
             for i in range(1, self._size + 1):
                 canvas[i, j] = '|'
 

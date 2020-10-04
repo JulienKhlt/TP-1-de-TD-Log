@@ -1,3 +1,5 @@
+# TP of Julien Khlaut and Pierre Glandon
+
 class MutableString:
     """
     A mutable definition of a string.
