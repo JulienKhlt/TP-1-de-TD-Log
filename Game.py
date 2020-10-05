@@ -48,7 +48,7 @@ class Game:
         for domino in self.hand:
             print(domino)
 
-    def round(self):
+    def turn(self):
         """This is a function that handles a turn in the solitaire's game"""
 
         # We choose which dominoes are going to be removed
@@ -63,33 +63,36 @@ class Game:
         if sum == self.number_point:
             for i in range(len(num_domino)):
                 del (self.hand[int(num_domino[i]) - 1])
-                if len(self.deck) != 0:
-                    domino = self.deck.pop()
-                    self.hand.append(domino)
-                else:
-                    if len(self.hand) == 0:
-                        self.victory = True
+                self.is_game_win()
         else:
             print(f"The sum of the dominos selected is not equal to {self.number_point}. Try again")
 
         print(f"It remains {len(self.deck)} dominos in the deck and {len(self.hand)} in you hand")
 
-    def islost(self):
+    def is_game_win(self):
+        if len(self.deck) != 0:
+            domino = self.deck.pop()
+            self.hand.append(domino)
+        else:
+            if len(self.hand) == 0:
+                self.victory = True
+
+    def is_game_lost(self):
         """Check if the game is lost"""
         values = [self.hand[i]._lvalue + self.hand[i]._rvalue for i in range(len(self.hand))]
         return not sum_in_list(values, 7, self.number_point)
 
-    def play_game(self):
+    def play(self):
         """Manage the game"""
         while not self.victory:
 
-            if self.islost():
+            if self.is_game_lost():
                 print("You have lost... Too bad !")
                 exit(0)
 
             self.affichage()
 
-            self.round()
+            self.turn()
 
         print("You have won ! Congratulation !")
 

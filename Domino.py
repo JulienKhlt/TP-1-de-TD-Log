@@ -107,6 +107,14 @@ class Domino:
         self._rvalue = r_value
         self._size = size
 
+    @property
+    def l_value(self):
+        return  self._lvalue
+
+    @property
+    def r_value(self):
+        return self._rvalue
+
     def generate_normalized_pattern(self, value):
         """Generate a 3x3 pattern for the given value, useful to generate higher value pattern by expanding it."""
         pattern = []
@@ -130,3 +138,12 @@ class Domino:
             pattern.append(((size // 2) * i, (size // 2) * j))
 
         return pattern
+
+    def __repr__(self):
+        return f"Domino({self._lvalue}, {self._rvalue})"
+
+    def __eq__(self, other):
+        return (self.l_value == other.l_value and self.r_value == other.r_value)
+
+    def __ne__(self, other):
+        return (self.l_value != other.l_value or self.r_value != other.r_value)

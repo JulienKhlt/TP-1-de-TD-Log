@@ -7,4 +7,4 @@ if __name__ == '__main__':
     game = Game()
 
     # Execution of the game
-    game.play_game()
+    game.play()
