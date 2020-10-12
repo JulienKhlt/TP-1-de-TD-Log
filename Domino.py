@@ -109,11 +109,15 @@ class Domino:
 
     @property
     def l_value(self):
-        return  self._lvalue
+        return self._lvalue
 
     @property
     def r_value(self):
         return self._rvalue
+
+    @property
+    def get_value(self):
+        return self._rvalue + self._lvalue
 
     def generate_normalized_pattern(self, value):
         """Generate a 3x3 pattern for the given value, useful to generate higher value pattern by expanding it."""

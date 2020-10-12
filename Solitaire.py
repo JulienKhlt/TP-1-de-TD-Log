@@ -3,10 +3,11 @@
 from Domino import Domino
 from random import randint
 
-class Game:
-    """class Game which handles the solitaire. It is based on the class Domino"""
 
-    def __init__(self, number_domino = 28, number_point = 12):
+class Solitaire:
+    """class Solitaire which handles the solitaire. It is based on the class Domino"""
+
+    def __init__(self, number_domino=28, number_point=12):
         """Create the game which possesses the number of dominos in the game
         and the number maximum of cards in the hand, but also which dominoes
         are in the deck or in the hand. And finally a bolean which caracterise the victory"""
@@ -42,32 +43,11 @@ class Game:
 
         return deck, hand
 
-    def affichage(self):
+    def print(self):
         """Printing the dominoes in the hand"""
 
         for domino in self.hand:
             print(domino)
-
-    def turn(self):
-        """This is a function that handles a turn in the solitaire's game"""
-
-        # We choose which dominoes are going to be removed
-        # and we sort them from the bigger to the smaller
-        num_domino = sorted(input("Choose the number of the dominos to remove "), reverse=True)
-
-        # Then we check if the sum of dominoes selected is indeed the number_point (12 normally)
-        sum = 0
-        for i in range(len(num_domino)):
-            sum += self.hand[int(num_domino[i]) - 1]._lvalue + self.hand[int(num_domino[i]) - 1]._rvalue
-
-        if sum == self.number_point:
-            for i in range(len(num_domino)):
-                del (self.hand[int(num_domino[i]) - 1])
-                self.is_game_win()
-        else:
-            print(f"The sum of the dominos selected is not equal to {self.number_point}. Try again")
-
-        print(f"It remains {len(self.deck)} dominos in the deck and {len(self.hand)} in you hand")
 
     def is_game_win(self):
         if len(self.deck) != 0:
@@ -81,20 +61,6 @@ class Game:
         """Check if the game is lost"""
         values = [self.hand[i]._lvalue + self.hand[i]._rvalue for i in range(len(self.hand))]
         return not sum_in_list(values, 7, self.number_point)
-
-    def play(self):
-        """Manage the game"""
-        while not self.victory:
-
-            if self.is_game_lost():
-                print("You have lost... Too bad !")
-                exit(0)
-
-            self.affichage()
-
-            self.turn()
-
-        print("You have won ! Congratulation !")
 
 
 def sum_in_list(list, n, sum):
