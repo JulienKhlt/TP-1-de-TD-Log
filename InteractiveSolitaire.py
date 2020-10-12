@@ -1,3 +1,4 @@
+from DominoExceptions import BadSumException, BadDominoException
 from Solitaire import Solitaire
 
 
@@ -8,14 +9,21 @@ class InteractiveSolitaire(Solitaire):
         # We choose which dominoes are going to be removed
         # and we sort them from the bigger to the smaller
         num_domino = list(input("Choose the number of the dominos to remove "))
+        try:
+            num_domino = [int(i) - 1 for i in num_domino]
+        except ValueError:
+            print("Please enter a sequence of int! (ex: 145 to select dominos 1, 4 and 5)")
+            return
+
         dominos_to_discard = [self.hand[int(i) - 1] for i in num_domino]
 
         try:
-            self.discard(dominos_to_discard)
-            self.draw()
-            self.is_game_win()
-        except ValueError:
-            print(f"The sum of the dominos selected is not equal to {self.number_point}. Try again")
+            self.check_dominos(num_domino)
+            self.play_turn(dominos_to_discard)
+        except BadSumException as bad_sum:
+            print(bad_sum)
+        except BadDominoException as bad_domino:
+            print(bad_domino)
         finally:
             print(f"It remains {len(self.deck)} dominos in the deck and {len(self.hand)} in you hand")
 
