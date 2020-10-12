@@ -58,7 +58,7 @@ class Game:
         # Then we check if the sum of dominoes selected is indeed the number_point (12 normally)
         sum = 0
         for i in range(len(num_domino)):
-            self.check_domino(i)
+            self.check_domino(int(num_domino[i])-1)
             sum += self.hand[int(num_domino[i]) - 1]._lvalue + self.hand[int(num_domino[i]) - 1]._rvalue
 
         if sum == self.number_point:
