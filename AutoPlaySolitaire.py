@@ -3,16 +3,20 @@ from Solitaire import Solitaire
 
 
 class AutoPlaySolitaire(Solitaire):
+
+    TESTED_SOLUTION = {}
+    MATCH_COUNT = 0
+
     def auto_play(self):
         """TODO Returns a solution, if any. None otherwise"""
 
         try:
-            self.auto_play_helper({})
+            self.auto_play_helper()
         except EndGameException:
             return True
         return False
 
-    def auto_play_helper(self, tested_solution):
+    def auto_play_helper(self):
         """Raise an EndGameException if a solution exists."""
 
         discard_sets = self.get_discard_possibilities()
@@ -27,11 +31,23 @@ class AutoPlaySolitaire(Solitaire):
             if self.victory:
                 raise EndGameException
 
-            if self.current_state.state_size not in tested_solution:
-                tested_solution[self.current_state.state_size] = {}
-            if self.current_state not in tested_solution[self.current_state.state_size]:
-                tested_solution[self.current_state.state_size][self.current_state] = True
-                self.auto_play_helper(tested_solution)
+            if self.current_state.state_size not in AutoPlaySolitaire.TESTED_SOLUTION:
+                AutoPlaySolitaire.TESTED_SOLUTION[self.current_state.state_size] = {}
+
+            current_state_size = self.current_state.state_size
+            current_state_hash = self.current_state.__hash__()
+
+            if current_state_hash not in AutoPlaySolitaire.TESTED_SOLUTION[current_state_size]:
+                try:
+                    self.auto_play_helper()
+                except EndGameException:
+                    AutoPlaySolitaire.TESTED_SOLUTION[current_state_size][current_state_hash] = True
+                    raise EndGameException
+                AutoPlaySolitaire.TESTED_SOLUTION[current_state_size][current_state_hash] = False
+            else:
+                AutoPlaySolitaire.MATCH_COUNT += 1
+                if AutoPlaySolitaire.TESTED_SOLUTION[current_state_size][current_state_hash]:
+                    raise EndGameException
             self.hand = tmp[:]
 
     def get_discard_possibilities(self):

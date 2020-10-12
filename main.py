@@ -16,3 +16,4 @@ if __name__ == '__main__':
         game = AutoPlaySolitaire()
 
     print(win_count / N * 100)
+    print(game.MATCH_COUNT)
