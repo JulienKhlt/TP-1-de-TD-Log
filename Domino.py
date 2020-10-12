@@ -53,7 +53,7 @@ class Domino:
 
         for (i, j) in pattern:
             list_position_i, list_position_j = self.transform_pattern_coord_to_list_coord(i, j)
-            display_list[list_position_i, 2*list_position_j] = Domino.DISPLAY_SYMBOL
+            display_list[list_position_i, 2 * list_position_j] = Domino.DISPLAY_SYMBOL
 
         return display_list
 
@@ -70,7 +70,7 @@ class Domino:
         canvas = self.generate_canvas()
 
         canvas.insert(1, 1, display_lvalue)
-        canvas.insert(1, 2*self._size + 1, display_rvalue)
+        canvas.insert(1, 2 * self._size + 1, display_rvalue)
 
         return str(canvas)
 
@@ -87,14 +87,14 @@ class Domino:
         for i in [0, self._size + 1]:
             # We generate top/bottom border
             canvas[i, 0] = '+'
-            for j in range(1, 2*self._size):
+            for j in range(1, 2 * self._size):
                 canvas[i, j] = '-'
-            canvas[i, 2*self._size] = '|'
-            for j in range(2*self._size + 1, 4 * self._size + 1):
+            canvas[i, 2 * self._size] = '|'
+            for j in range(2 * self._size + 1, 4 * self._size + 1):
                 canvas[i, j] = '-'
             canvas[i, -1] = '+'
 
-        for j in [0, 2*self._size, 4 * self._size]:
+        for j in [0, 2 * self._size, 4 * self._size]:
             for i in range(1, self._size + 1):
                 canvas[i, j] = '|'
 
@@ -103,25 +103,26 @@ class Domino:
 
     def __init__(self, l_value, r_value, size=DEFAULT_SIZE):
         # Once set those values shouldn't be modified.
-        check_half_Domino(l_value)
-        check_half_Domino(r_value)
+        check_half_domino(l_value)
+        check_half_domino(r_value)
         self._lvalue = l_value
         self._rvalue = r_value
         self._size = int(size)
 
     @property
-    def l_value(self):
+    def lvalue(self):
         return self._lvalue
 
     @property
-    def r_value(self):
+    def rvalue(self):
         return self._rvalue
 
     @property
     def get_value(self):
         return self._rvalue + self._lvalue
 
-    def generate_normalized_pattern(self, value):
+    @staticmethod
+    def generate_normalized_pattern(value):
         """Generate a 3x3 pattern for the given value, useful to generate higher value pattern by expanding it."""
         pattern = []
 
@@ -136,7 +137,8 @@ class Domino:
 
         return pattern
 
-    def expand_pattern(self, pattern_normalized, size):
+    @staticmethod
+    def expand_pattern(pattern_normalized, size):
         """Takes a normalized 3x3 patterns and turns it into an equivalent value size x size pattern"""
         pattern = []
 
@@ -149,21 +151,28 @@ class Domino:
         return f"Domino({self._lvalue}, {self._rvalue})"
 
     def __eq__(self, other):
-        return (self.l_value == other.l_value and self.r_value == other.r_value)
+        return self.lvalue == other.lvalue and self.rvalue == other.rvalue
 
     def __ne__(self, other):
-        return (self.l_value != other.l_value or self.r_value != other.r_value)
+        return self.lvalue != other.lvalue or self.rvalue != other.rvalue
+
+    def __lt__(self, other):
+        return self.lvalue < other.lvalue or self.rvalue < other.lvalue
+
 
 class Correct_Half_Domino(Exception):
     def __init__(self, n):
         super().__init__()
         self._value = n
+
     @property
     def value(self):
         return self._value
+
     def __str__(self):
         return f"Half domino's value is not correct : '{self._value}'. It has to be an integer between 0 and 6"
 
-def check_half_Domino(value):
+
+def check_half_domino(value):
     if type(value) != int or value > 6 or value < 0:
         raise Correct_Half_Domino(value)

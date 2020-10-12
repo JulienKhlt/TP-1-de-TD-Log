@@ -4,7 +4,7 @@ from Domino import Domino
 from random import randint
 
 from DominoExceptions import BadDominoException, BadSumException
-
+from SolitaireState import SolitaireState
 
 class Solitaire:
     """class Solitaire which handles the solitaire. It is based on the class Domino"""
@@ -25,6 +25,7 @@ class Solitaire:
         self.hand_size = hand_size
         self.victory = False
         self.deck, self.hand = self.create_deck()
+        self.current_state = SolitaireState(self.deck, self.hand, 6)
 
     def create_deck(self):
         """A function to create the deck and the
@@ -32,7 +33,7 @@ class Solitaire:
 
         id_already_use, deck, hand = [], [], []
 
-        for _ in range(self.number_domino - 7):
+        for _ in range(self.number_domino - self.hand_size):
 
             # We generate a domino and keep its id in id_alread_use
             # then we make sure to ony keep new id
@@ -43,7 +44,7 @@ class Solitaire:
             deck.append(Domino(id[0], id[1]))
             id_already_use.append(id)
 
-        for _ in range(7):
+        for _ in range(self.hand_size):
             id = (randint(0, 6), randint(0, 6))
             while id in id_already_use:
                 id = (randint(0, 6), randint(0, 6))
@@ -88,6 +89,7 @@ class Solitaire:
         self.discard(discard_set)
         self.draw()
         self.victory = self.is_game_win()
+        self.current_state.update_state(self.deck, self.hand)
 
     def check_dominos(self, dominos_index_list):
         for domino_index in dominos_index_list:

@@ -22,3 +22,7 @@ class BadSumException(Exception):
 
     def __str__(self):
         return f"The sum of you Dominos is not equal to '{self.sum}'"
+
+class EndGameException(Exception):
+    """Exception that indicates that a solution was found"""
+    pass

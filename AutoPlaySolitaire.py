@@ -1,37 +1,38 @@
+from DominoExceptions import EndGameException
 from Solitaire import Solitaire
 
 
 class AutoPlaySolitaire(Solitaire):
     def auto_play(self):
         """TODO Returns a solution, if any. None otherwise"""
-        pass
 
-    def auto_play_helper(self):
-        """Returns True if a solution exists, False otherwise."""
-
-        if self.is_game_win():
+        try:
+            self.auto_play_helper({})
+        except EndGameException:
             return True
+        return False
+
+    def auto_play_helper(self, tested_solution):
+        """Raise an EndGameException if a solution exists."""
 
         discard_sets = self.get_discard_possibilities()
-        if not discard_sets:
-            return False
 
         # We make a copy of the deck
         tmp = self.hand[:]
-        found_solution = False
 
         # try every possible discard
         for discard_set in discard_sets:
-            self.discard(discard_set)
-            self.draw()
+            self.play_turn(discard_set)
 
-            found_solution = found_solution or self.auto_play_helper()
-            if found_solution:
-                return True
+            if self.victory:
+                raise EndGameException
 
+            if self.current_state.state_size not in tested_solution:
+                tested_solution[self.current_state.state_size] = {}
+            if self.current_state not in tested_solution[self.current_state.state_size]:
+                tested_solution[self.current_state.state_size][self.current_state] = True
+                self.auto_play_helper(tested_solution)
             self.hand = tmp[:]
-
-        return False
 
     def get_discard_possibilities(self):
         """Returns a list containing the sets that can be discarded."""
