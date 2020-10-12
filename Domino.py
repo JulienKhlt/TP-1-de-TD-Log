@@ -103,9 +103,11 @@ class Domino:
 
     def __init__(self, l_value, r_value, size=DEFAULT_SIZE):
         # Once set those values shouldn't be modified.
+        check_half_Domino(l_value)
+        check_half_Domino(r_value)
         self._lvalue = l_value
         self._rvalue = r_value
-        self._size = size
+        self._size = int(size)
 
     @property
     def l_value(self):
@@ -151,3 +153,17 @@ class Domino:
 
     def __ne__(self, other):
         return (self.l_value != other.l_value or self.r_value != other.r_value)
+
+class Correct_Half_Domino(Exception):
+    def __init__(self, n):
+        super().__init__()
+        self._value = n
+    @property
+    def value(self):
+        return self._value
+    def __str__(self):
+        return f"Half domino's value is not correct : '{self._value}'. It has to be an integer between 0 and 6"
+
+def check_half_Domino(value):
+    if type(value) != int or value > 6 or value < 0:
+        raise Correct_Half_Domino(value)

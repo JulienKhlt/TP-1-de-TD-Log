@@ -56,6 +56,28 @@ class Solitaire:
         for domino in self.hand:
             print(domino)
 
+    def turn(self):
+        """This is a function that handles a turn in the solitaire's game"""
+
+        # We choose which dominoes are going to be removed
+        # and we sort them from the bigger to the smaller
+        num_domino = sorted(input("Choose the number of the dominos to remove "), reverse=True)
+
+        # Then we check if the sum of dominoes selected is indeed the number_point (12 normally)
+        sum = 0
+        for i in range(len(num_domino)):
+            self.check_domino(int(num_domino[i])-1)
+            sum += self.hand[int(num_domino[i]) - 1]._lvalue + self.hand[int(num_domino[i]) - 1]._rvalue
+
+        if sum == self.number_point:
+            for i in range(len(num_domino)):
+                del (self.hand[int(num_domino[i]) - 1])
+                self.is_game_win()
+        else:
+            raise(Wrong_Sum(self.number_point))
+
+        print(f"It remains {len(self.deck)} dominos in the deck and {len(self.hand)} in you hand")
+
     def is_game_win(self):
         """Check if the game is won i.e. the deck and the hand are empty"""
         return not self.deck and not self.hand
@@ -85,6 +107,10 @@ class Solitaire:
     def play_turn(self, discard_set):
         self.discard(discard_set)
 
+    def check_domino(self, n):
+        if n >= len(self.hand) or n < 0:
+            raise Wrong_Domino(n)
+
 
 def sum_in_list(list, n, sum):
     """Return True if there exists a subset of LIST
@@ -106,3 +132,25 @@ def sum_in_list(list, n, sum):
     # the recursion stop when the sum is null
     # or when there is no more number.
     return sum_in_list(list, n - 1, sum) or sum_in_list(list, n - 1, sum - list[n - 1])
+
+class Wrong_Domino(Exception):
+    def __init__(self, n):
+        super().__init__()
+        self._value = n
+    @property
+    def value(self):
+        return self._value
+    def __str__(self):
+        return f"The Domino '{self._value}' is not in your hand."
+
+class Wrong_Sum(Exception):
+    def __init__(self, sum):
+        super().__init__()
+        self._sum = sum
+    @property
+    def sum(self):
+        return self._sum
+    def __str__(self):
+        return f"The sum of you Dominos is not equal to '{self.sum}'"
+
+
