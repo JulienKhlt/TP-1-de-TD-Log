@@ -2,6 +2,36 @@ from Solitaire import Solitaire
 
 
 class AutoPlaySolitaire(Solitaire):
+    def auto_play(self):
+        """Returns a solution, if any. None otherwise"""
+        pass
+
+    def auto_play_helper(self):
+        if self.is_game_win():
+            return True
+
+        discard_sets = self.get_discard_possibilities()
+        if not discard_sets:
+            return False
+
+        # We make a copy of the deck
+        tmp = self.hand[:]
+
+        found_solution = False
+
+        # try every possible discard
+        for discard_set in discard_sets:
+            self.discard(discard_set)
+            self.draw()
+
+            found_solution = found_solution or self.auto_play_helper()
+            if found_solution:
+                return True
+
+            self.hand = tmp[:]
+
+        return False
+
     def get_discard_possibilities(self):
         """Returns a list containing the sets that can be discarded."""
         result = []

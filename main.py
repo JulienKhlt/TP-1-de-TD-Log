@@ -7,4 +7,4 @@ if __name__ == '__main__':
     game = AutoPlaySolitaire()
 
     # Execution of the game
-    print(game.get_discard_possibilities())
+    print(game.auto_play_helper())

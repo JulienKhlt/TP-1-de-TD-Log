@@ -7,13 +7,14 @@ from random import randint
 class Solitaire:
     """class Solitaire which handles the solitaire. It is based on the class Domino"""
 
-    def __init__(self, number_domino=28, number_point=12):
+    def __init__(self, number_domino=28, number_point=12, hand_size=7):
         """Create the game which possesses the number of dominos in the game
         and the number maximum of cards in the hand, but also which dominoes
         are in the deck or in the hand. And finally a bolean which caracterise the victory"""
 
         self.number_domino = number_domino
         self.number_point = number_point
+        self.hand_size = 7
         self.victory = False
         self.deck, self.hand = self.create_deck()
 
@@ -50,17 +51,33 @@ class Solitaire:
             print(domino)
 
     def is_game_win(self):
-        if len(self.deck) != 0:
-            domino = self.deck.pop()
-            self.hand.append(domino)
-        else:
-            if len(self.hand) == 0:
-                self.victory = True
+        """Check if the game is won i.e. the deck and the hand are empty"""
+        return not self.deck and not self.hand
 
     def is_game_lost(self):
         """Check if the game is lost"""
         values = [self.hand[i]._lvalue + self.hand[i]._rvalue for i in range(len(self.hand))]
         return not sum_in_list(values, 7, self.number_point)
+
+    def discard(self, discard_set, check=True):
+        """Discard cards from hand if discard set is valid (i.e. sum of value is number_point)"""
+        if check:
+            value = 0
+            for domino in discard_set:
+                value += domino.get_value
+
+            if value != self.number_point:
+                raise ValueError(f"Some of Dominos values in the discard set should be {self.number_point}")
+
+        for domino in discard_set:
+            self.hand.remove(domino)
+
+    def draw(self):
+        while len(self.hand) < self.hand_size and self.deck:
+            self.hand.append(self.deck.pop())
+
+    def play_turn(self, discard_set):
+        self.discard(discard_set)
 
 
 def sum_in_list(list, n, sum):
