@@ -3,10 +3,12 @@ from Solitaire import Solitaire
 
 class AutoPlaySolitaire(Solitaire):
     def auto_play(self):
-        """Returns a solution, if any. None otherwise"""
+        """TODO Returns a solution, if any. None otherwise"""
         pass
 
     def auto_play_helper(self):
+        """Returns True if a solution exists, False otherwise."""
+
         if self.is_game_win():
             return True
 
@@ -16,7 +18,6 @@ class AutoPlaySolitaire(Solitaire):
 
         # We make a copy of the deck
         tmp = self.hand[:]
-
         found_solution = False
 
         # try every possible discard

@@ -4,7 +4,7 @@ from InteractiveSolitaire import InteractiveSolitaire
 
 if __name__ == '__main__':
     # Creation of the game
-    game = AutoPlaySolitaire()
+    game = InteractiveSolitaire()
 
     # Execution of the game
-    print(game.auto_play_helper())
+    print(game.play())
