@@ -58,6 +58,7 @@ class Game:
         # Then we check if the sum of dominoes selected is indeed the number_point (12 normally)
         sum = 0
         for i in range(len(num_domino)):
+            self.check_domino(i)
             sum += self.hand[int(num_domino[i]) - 1]._lvalue + self.hand[int(num_domino[i]) - 1]._rvalue
 
         if sum == self.number_point:
@@ -65,7 +66,7 @@ class Game:
                 del (self.hand[int(num_domino[i]) - 1])
                 self.is_game_win()
         else:
-            print(f"The sum of the dominos selected is not equal to {self.number_point}. Try again")
+            raise(Wrong_Sum(self.number_point))
 
         print(f"It remains {len(self.deck)} dominos in the deck and {len(self.hand)} in you hand")
 
@@ -96,6 +97,10 @@ class Game:
 
         print("You have won ! Congratulation !")
 
+    def check_domino(self, n):
+        if n >= len(self.hand) or n < 0:
+            raise Wrong_Domino(n)
+
 
 def sum_in_list(list, n, sum):
     """Return a bolean the caracterise the defeat,
@@ -118,3 +123,24 @@ def sum_in_list(list, n, sum):
     # the recursion stop when the sum is null
     # or when there is no more number.
     return sum_in_list(list, n - 1, sum) or sum_in_list(list, n - 1, sum - list[n - 1])
+
+class Wrong_Domino(Exception):
+    def __init__(self, n):
+        super().__init__()
+        self._value = n
+    @property
+    def value(self):
+        return self._value
+    def __str__(self):
+        return f"The Domino '{self._value}' is not in your hand."
+
+class Wrong_Sum(Exception):
+    def __init__(self, sum):
+        super().__init__()
+        self._sum = sum
+    @property
+    def sum(self):
+        return self._sum
+    def __str__(self):
+        return f"The sum of you Dominos is not equal to '{self.sum}'"
+
