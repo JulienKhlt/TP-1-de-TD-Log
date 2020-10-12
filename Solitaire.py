@@ -7,14 +7,20 @@ from random import randint
 class Solitaire:
     """class Solitaire which handles the solitaire. It is based on the class Domino"""
 
-    def __init__(self, number_domino=28, number_point=12, hand_size=7):
+    DEFAULT_NUMBER_DOMINO = 28
+    DEFAULT_NUMBER_POINT = 12
+    DEFAULT_HAND_SIZE = 7
+
+    def __init__(self, number_domino=DEFAULT_NUMBER_DOMINO,
+                 number_point=DEFAULT_NUMBER_POINT,
+                 hand_size=DEFAULT_HAND_SIZE):
         """Create the game which possesses the number of dominos in the game
         and the number maximum of cards in the hand, but also which dominoes
         are in the deck or in the hand. And finally a bolean which caracterise the victory"""
 
         self.number_domino = number_domino
         self.number_point = number_point
-        self.hand_size = 7
+        self.hand_size = hand_size
         self.victory = False
         self.deck, self.hand = self.create_deck()
 
@@ -81,9 +87,8 @@ class Solitaire:
 
 
 def sum_in_list(list, n, sum):
-    """Return a bolean the caracterise the defeat,
-    we check if we can make the sum which the numbers
-    that are in the list. The algorithm is recursive and
+    """Return True if there exists a subset of LIST
+    where the sum of its value is equal to SUM. The algorithm is recursive and
     n is the number of numbers in the list we can use"""
 
     # Initialisation
