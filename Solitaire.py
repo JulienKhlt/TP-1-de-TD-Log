@@ -85,8 +85,8 @@ class Solitaire:
         while len(self.hand) < self.hand_size and self.deck:
             self.hand.append(self.deck.pop())
 
-    def play_turn(self, discard_set):
-        self.discard(discard_set)
+    def play_turn(self, discard_set, check=True):
+        self.discard(discard_set, check)
         self.draw()
         self.victory = self.is_game_win()
         self.current_state.update_state(self.deck, self.hand)

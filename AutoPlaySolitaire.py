@@ -19,14 +19,15 @@ class AutoPlaySolitaire(Solitaire):
     def auto_play_helper(self):
         """Raise an EndGameException if a solution exists."""
 
-        discard_sets = self.get_discard_possibilities()
+        # discard_sets = self.get_discard_possibilities()
+        discard_sets = self.get_discard_possibilities_dyn()
 
         # We make a copy of the deck
         tmp = self.hand[:]
 
         # try every possible discard
         for discard_set in discard_sets:
-            self.play_turn(discard_set)
+            self.play_turn(discard_set, check=False)
 
             if self.victory:
                 raise EndGameException
@@ -74,3 +75,37 @@ class AutoPlaySolitaire(Solitaire):
         self.get_discard_possibilities_rec(deck_rest[:-1], deck_used + [deck_rest[-1]],
                                            total_value - deck_rest[-1].get_value, results_set)
         self.get_discard_possibilities_rec(deck_rest[:-1], deck_used, total_value, results_set)
+
+    def get_discard_possibilities_dyn(self):
+        # We begin with the memoisation
+        memoization = [[False for i in range (self.number_point + 1)] for i in range(len(self.hand) + 1)]
+
+        # Initialization
+        for i in range(len(self.hand)):
+            memoization[i][0] = True
+
+        for i in range(1, len(self.hand) + 1):
+            for j in range(1, self.number_point + 1):
+                if j < self.hand[i - 1].get_value:
+                    memoization[i][j] = memoization[i][j - 1]
+                else:
+                    memoization[i][j] = memoization[i][j - 1] or memoization[i][j - self.hand[i - 1].get_value]
+
+        def solution_rec(i, j, hand):
+            if i == 0:
+                return [[]]
+
+            results = []
+            if memoization[i - 1][j]:
+                # We can
+                results += solution_rec(i - 1, j, hand)
+            if j >= hand[i - 1].get_value and memoization[i - 1][j - hand[i - 1].get_value]:
+                # On peut resoudre le pb en prenant cette valeur
+                tmp_res = solution_rec(i - 1, j - hand[i - 1].get_value, hand)
+                for res in tmp_res:
+                    res += [hand[i - 1]]
+                results += tmp_res
+
+            return results
+
+        return solution_rec(len(self.hand), self.number_point, self.hand)
