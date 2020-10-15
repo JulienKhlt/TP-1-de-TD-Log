@@ -66,7 +66,7 @@ class Solitaire:
     def is_game_lost(self):
         """Check if the game is lost"""
         values = [self.hand[i]._lvalue + self.hand[i]._rvalue for i in range(len(self.hand))]
-        return not sum_in_list(values, 7, self.number_point)
+        return not sum_in_list_dyn(values, self.number_point)
 
     def discard(self, discard_set, check=True):
         """Discard cards from hand if discard set is valid (i.e. sum of value is number_point)"""
@@ -105,7 +105,7 @@ def sum_in_list(list, n, sum):
     """Return True if there exists a subset of LIST
     where the sum of its value is equal to SUM. The algorithm is recursive and
     n is the number of numbers in the list we can use
-    TODO Make a dynamic programming version of it"""
+    DONE Make a dynamic programming version of it"""
 
     # Initialisation
     if (sum == 0):
@@ -123,6 +123,20 @@ def sum_in_list(list, n, sum):
     # or when there is no more number.
     return sum_in_list(list, n - 1, sum) or sum_in_list(list, n - 1, sum - list[n - 1])
 
+def sum_in_list_dyn(number_list, total_value):
+    """Returns True if there exists a subset of NUMBER_LIST such that the sum of it's value
+    is equal to TOTAL_VALUE, False otherwise."""
+    memoization = [[False for i in range(total_value + 1)] for i in range(len(number_list) + 1)]
 
+    for i in range(len(number_list) + 1):
+        # We can always make 0 with the empty set.
+        memoization[i][0] = True
 
+    for i in range(1, len(number_list) + 1):
+        for j in range(1, total_value + 1):
+            if j < number_list[i - 1]:
+                memoization[i][j] = memoization[i - 1][j]
+            else:
+                memoization[i][j] = memoization[i - 1][j] or memoization[i - 1][j - number_list[i - 1]]
 
+    return memoization[len(number_list)][total_value]

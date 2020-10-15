@@ -4,3 +4,6 @@
 /.idea/modules.xml
 /.idea/vcs.xml
 /__pycache__/
+/BigResults.png
+/compare.png
+/tests.py

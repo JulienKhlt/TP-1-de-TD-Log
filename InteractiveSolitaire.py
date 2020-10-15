@@ -15,7 +15,7 @@ class InteractiveSolitaire(Solitaire):
             print("Please enter a sequence of int! (ex: 145 to select dominos 1, 4 and 5)")
             return
 
-        dominos_to_discard = [self.hand[int(i) - 1] for i in num_domino]
+        dominos_to_discard = [self.hand[i] for i in num_domino]
 
         try:
             self.check_dominos(num_domino)
